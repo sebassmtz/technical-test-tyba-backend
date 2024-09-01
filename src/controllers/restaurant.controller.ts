@@ -35,8 +35,15 @@ export class Restaurantcontroller {
       // Buscar restaurantes cerca de la ubicación
       const placesUrl = `${process.env.PLACES_URL}/json?location=${location}&radius=1500&type=restaurant&key=${GOOGLE_API_KEY}`
       const placesResponse = await axios.get(placesUrl)
-      const restaurants = placesResponse.data.results
 
+      // Mapear los restaurantes encontrados
+      const restaurants = placesResponse.data.results.map((restaurant: any) => {
+        return {
+          name: restaurant.name,
+          address: restaurant.vicinity,
+          location: restaurant.geometry.location,
+        }
+      })
       return res.json(restaurants)
     } catch (error) {
       return res
