@@ -1,10 +1,17 @@
 import dotenv from "dotenv"
 import { Request, Response } from "express"
 import axios from "axios"
+import { TransactionService } from "../services/transaction.service"
 
 dotenv.config()
 
 export class Restaurantcontroller {
+
+  private readonly transactionsService: TransactionService
+
+  constructor() {
+    this.transactionsService = new TransactionService()
+  }
   public async getRestaurantForUbication(
     req: Request,
     res: Response

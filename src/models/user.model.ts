@@ -1,3 +1,4 @@
+import { Transactions } from "./transactions.model"
 import {
   Model,
   DataTypes,
@@ -16,6 +17,7 @@ export class User extends Model<
   declare email: string
   declare password: string
   declare createdAt: CreationOptional<Date>
+  declare transactions?: Transactions[]
 }
 
 User.init(
@@ -48,3 +50,9 @@ User.init(
     tableName: "user",
   }
 )
+
+User.hasMany(Transactions, { foreignKey: "userId", sourceKey: "id" })
+Transactions.belongsTo(User, {
+  foreignKey: "userId",
+  targetKey: "id",
+})

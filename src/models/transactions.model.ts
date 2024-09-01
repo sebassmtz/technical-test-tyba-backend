@@ -7,6 +7,8 @@ import {
 } from "sequelize"
 import { sequelize } from "../helpers/Database"
 
+import { User } from "./user.model"
+
 export class Transactions extends Model<
   InferAttributes<Transactions>,
   InferCreationAttributes<Transactions>
@@ -15,9 +17,9 @@ export class Transactions extends Model<
   declare city: CreationOptional<string>
   declare lat: string
   declare lng: string
-  declare userId: number
-
   declare createdAt: CreationOptional<Date>
+
+  declare userId: number
 }
 
 Transactions.init(
@@ -39,9 +41,14 @@ Transactions.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    // Clave foránea
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: User,
+        key: "id",
+      },
     },
     createdAt: {
       type: DataTypes.DATE,

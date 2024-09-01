@@ -1,47 +1,49 @@
 import { Router } from "express"
 
-import { Usercontroller } from "../controllers/user.controller"
+import { TransactionsController } from "../controllers/transaction.controller"
 import { authRequired } from "../middlewares/ValidateToken"
 
-export default function userRouter(router: Router): void {
-  const userController = new Usercontroller()
+export default function transactionsRouter(router: Router): void {
+  const transactionsController = new TransactionsController()
 
   /**
    * @openapi
    * components:
    *  schemas:
-   *    User:
+   *    Transaction:
    *     type: object
    *     required:
-   *         - name
-   *         - email
-   *         - password
-   *         - role
+   *         - city
+   *         - lat
+   *         - lng
+   *         - userId
+   *         - createdAt
    *     example:
-   *         name: Jhoe Doe
-   *         email: jhon@gmail.com
-   *         password: 12345566
-   *         role: user
-   *    GetAllUserResponse:
+   *         city: Lima
+   *         lat: -12.043180
+   *         lng: -77.028236
+   *         userId: 1
+   *         createdAt: 2021-09-01T00:00:00.000Z
+   *    GetAllTransactionResponse:
    *     type: array
    *     items:
-   *       $ref: '#components/schemas/User'
+   *       $ref: '#components/schemas/Transaction'
    */
 
   /**
    * @openapi
-   * /api/users:
+   * /api/transactions:
    *  get:
    *     tags:
-   *     - User
-   *     summary: Get All users
+   *     - Transactions
+   *     summary: Get All Transactions
    *     responses:
    *       200:
    *        description: success
    *        content:
    *          application/json:
    *            schema:
-   *               $ref: '#/components/schemas/GetAllUserResponse'
+   *               $ref: '#/components/schemas/GetAllTransactionResponse'
    *       400:
    *        description: Bad request
    *        content:
@@ -50,32 +52,32 @@ export default function userRouter(router: Router): void {
    *              $ref: '#/components/schemas/BadRequest'
    */
   router.get(
-    "/api/users",
+    "/api/transactions",
     authRequired,
-    userController.getUsers.bind(userController)
+    transactionsController.getTransactions.bind(transactionsController)
   )
 
   /**
    * @openapi
-   * /api/users/{id}:
+   * /api/transactions/{id}:
    *  get:
    *     tags:
-   *     - User
-   *     summary: Get User by id
+   *     - Transactions
+   *     summary: Get Transaction by id
    *     parameters:
    *       - in: path
    *         name: id
    *         required: true
    *         schema:
    *           type: number
-   *         description: user id
+   *         description: Transaction id
    *     responses:
    *       200:
    *        description: success
    *        content:
    *          application/json:
    *            schema:
-   *              $ref: '#/components/schemas/User'
+   *              $ref: '#/components/schemas/Transaction'
    *       400:
    *        description: Bad request
    *        content:
@@ -90,8 +92,8 @@ export default function userRouter(router: Router): void {
    *              $ref: '#/components/schemas/NotFound'
    */
   router.get(
-    "/api/users/:id",
+    "/api/transactions/:id",
     authRequired,
-    userController.getUser.bind(userController)
+    transactionsController.getTransaction.bind(transactionsController)
   )
 }
