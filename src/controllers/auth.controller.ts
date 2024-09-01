@@ -1,7 +1,6 @@
 import { Request, Response } from "express"
 import { GenerateToken } from "../helpers/Token"
 import { EncryptPassword, ComparePassword } from "../helpers/Utils"
-
 // import jwt from "jsonwebtoken"
 import { User } from "../models/user.model"
 

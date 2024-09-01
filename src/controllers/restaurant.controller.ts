@@ -2,16 +2,43 @@ import dotenv from "dotenv"
 import { Request, Response } from "express"
 import axios from "axios"
 import { TransactionService } from "../services/transaction.service"
+import { GenerateTokenPayload } from "src/interfaces/token"
+import jwt from "jsonwebtoken"
 
 dotenv.config()
 
 export class Restaurantcontroller {
-
   private readonly transactionsService: TransactionService
 
   constructor() {
     this.transactionsService = new TransactionService()
   }
+
+  public getUserIdFromToken(req: Request): number | undefined {
+    try {
+      const authHeader = req.headers.authorization
+      if (!authHeader) {
+        throw new Error("Authorization header is missing")
+      }
+
+      const token = authHeader.split(" ")[1]
+      if (!token) {
+        throw new Error("Token is missing")
+      }
+
+      const secret = process.env.TOKEN_SECRET
+      if (!secret) {
+        throw new Error("Token secret is missing")
+      }
+      const verified = jwt.verify(token, secret) as GenerateTokenPayload
+      const { userId } = verified
+      return userId
+    } catch (error) {
+      console.error(error)
+      return undefined
+    }
+  }
+
   public async getRestaurantForUbication(
     req: Request,
     res: Response
@@ -43,6 +70,19 @@ export class Restaurantcontroller {
       const placesUrl = `${process.env.PLACES_URL}/json?location=${location}&radius=1500&type=restaurant&key=${GOOGLE_API_KEY}`
       const placesResponse = await axios.get(placesUrl)
 
+      // Validar el payload
+      const userId = this.getUserIdFromToken(req)
+      console.log("The user ID", userId)
+
+      // Se crea la transacción del usuario
+      if (userId) {
+        await this.transactionsService.createTransaction({
+          city: city,
+          userId: userId,
+          lat: location.split(",")[0],
+          lng: location.split(",")[1],
+        })
+      }
       // Mapear los restaurantes encontrados
       const restaurants = placesResponse.data.results.map((restaurant: any) => {
         return {
