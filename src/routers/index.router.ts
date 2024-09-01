@@ -2,6 +2,7 @@ import { Router } from "express"
 import healthRouter from "./health.router"
 import authRouter from "./auth.router"
 import userRouter from "./user.router"
+import restaurantRouter from "./restaurant.router"
 
 const router = Router()
 
@@ -33,6 +34,7 @@ export default function (app: Router): Router {
   healthRouter(app)
   authRouter(app)
   userRouter(app)
+  restaurantRouter(app)
 
   app.get("/", (req, res) => {
     res.status(200).json({ message: "Welcome to the API" })
