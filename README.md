@@ -11,7 +11,7 @@
 **Deployment Infrastructure:** Docker and Railway
 
 > [!IMPORTANT]
-> Link de la documentacion de los endpoints:
+> Link de la documentacion de los endpoints: https://technical-test-tyba-backend-development.up.railway.app/docs/#/
 
 - [Introducción](#introducción)
 - [Backend](#backend)
@@ -36,7 +36,8 @@
 }
 ```
 
-````bash
+> [!NOTE]
+> Las transacciones se guardan cuando el usuario realiza una peticion al **endpoint de restaurants**, en donde se guarda la informacion de la consulta que hace en restaurants, que son: **latitud, longitud, ciudad (opciona) y el Id del usuario**.
 
 ## Backend
 
@@ -50,7 +51,7 @@ Para instalar el backend de la aplicación de forma local, se debe seguir los si
 
 ```bash
 npm install
-````
+```
 
 2. Crear el archivo `.env` en la ruta raiz del backend y agregar el contenido, puede usar `.env.template` como referencia.
 
