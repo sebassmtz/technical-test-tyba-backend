@@ -36,6 +36,8 @@
 }
 ```
 
+````bash
+
 ## Backend
 
 El backend de la aplicación fue desarrollado en NodeJS con Express.js, se utilizo una base de datos PostgreSQL para almacenar la información de los ususarios
@@ -48,7 +50,7 @@ Para instalar el backend de la aplicación de forma local, se debe seguir los si
 
 ```bash
 npm install
-```
+````
 
 2. Crear el archivo `.env` en la ruta raiz del backend y agregar el contenido, puede usar `.env.template` como referencia.
 

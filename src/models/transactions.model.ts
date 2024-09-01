@@ -1,4 +1,3 @@
-import { Transactions } from "./transactions.model"
 import {
   Model,
   DataTypes,
@@ -8,37 +7,48 @@ import {
 } from "sequelize"
 import { sequelize } from "../helpers/Database"
 
-export class User extends Model<
-  InferAttributes<User>,
-  InferCreationAttributes<User>
+import { User } from "./user.model"
+
+export class Transactions extends Model<
+  InferAttributes<Transactions>,
+  InferCreationAttributes<Transactions>
 > {
   declare id: CreationOptional<number>
-  declare name: string
-  declare email: string
-  declare password: string
+  declare city: CreationOptional<string>
+  declare lat: string
+  declare lng: string
   declare createdAt: CreationOptional<Date>
-  declare transactions?: Transactions[]
+
+  declare userId: number
 }
 
-User.init(
+Transactions.init(
   {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    name: {
+    city: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    lat: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    email: {
+    lng: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
     },
-    password: {
-      type: DataTypes.STRING,
+    // Clave foránea
+    userId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: User,
+        key: "id",
+      },
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -47,12 +57,6 @@ User.init(
   },
   {
     sequelize,
-    tableName: "user",
+    tableName: "transactions",
   }
 )
-
-User.hasMany(Transactions, { foreignKey: "userId", sourceKey: "id" })
-Transactions.belongsTo(User, {
-  foreignKey: "userId",
-  targetKey: "id",
-})
